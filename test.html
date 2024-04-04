@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Slider 1 -->
+    <div class="slider" id="slider1">
+        <!-- Slider 1 Slides -->
+        <div class="slides">
+            <!-- Slides will be populated dynamically -->
+        </div>
+        <!-- Slider 1 Navigation Buttons -->
+        <button class="slider-btn prev" onclick="prevSlide('slider1')">&#10094;</button>
+        <button class="slider-btn next" onclick="nextSlide('slider1')">&#10095;</button>
+        <!-- Slider 1 Dots -->
+        <div class="dots"></div>
+    </div>
+
+    <!-- Slider 2 -->
+    <div class="slider" id="slider2">
+        <!-- Slider 2 Slides -->
+        <div class="slides">
+            <!-- Slides will be populated dynamically -->
+        </div>
+        <!-- Slider 2 Navigation Buttons -->
+        <button class="slider-btn prev" onclick="prevSlide('slider2')">&#10094;</button>
+        <button class="slider-btn next" onclick="nextSlide('slider2')">&#10095;</button>
+        <!-- Slider 2 Dots -->
+        <div class="dots"></div>
+    </div>
+
+    <!-- Slider 3 -->
+    <div class="slider" id="slider3">
+        <!-- Slider 3 Slides -->
+        <div class="slides">
+            <div class="slide">
+                <div class="slide-content">
+                    <p>slide 1</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <p>slide 2</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content">
+                    <p>slide 3</p>
+                </div>
+            </div>
+        </div>
+        <!-- Slider 3 Navigation Buttons -->
+        <button class="slider-btn prev" onclick="prevSlide('slider3')">&#10094;</button>
+        <button class="slider-btn next" onclick="nextSlide('slider3')">&#10095;</button>
+        <!-- Slider 3 Dots -->
+        <div class="dots"></div>
+    </div>
+
+    <!-- Script to Populate Slider 1 with Data from data.js -->
+    <script src="data.js"></script>
+
+    <!-- Script to Populate Slider 2 with Data from data2.js -->
+    <script src="data2.js"></script>
+
+    <!-- Your Slider JavaScript -->
+    <script src="slider.js"></script>
+
+    <script>
+        // Slider configurations
+        // Initialize sliders on DOMContentLoaded event
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach((slider, index) => {
+                const config = [
+                    { autoplayDelay: 3000 }, // Slider 1 with autoplay delay of 3000ms
+                    { autoplayDelay: 5000 }, // Slider 2 with autoplay delay of 5000ms
+                    { autoplayDelay: 1000 }, // Slider 3 with autoplay delay of 1000ms
+
+                ][index];
+                new Slider(slider.id, config.autoplayDelay);
+            });
+        });
+
+        // Populate Slider 1 with data
+        const slider1Slides = document.querySelector('#slider1 .slides');
+        userData.forEach(user => {
+            const slide = document.createElement('div');
+            slide.classList.add('slide');
+            slide.innerHTML = `
+                <div class="slide-content">
+                    <p>${user.content}</p>
+                    <div class='slide-content-image-container'> 
+                        <img class='slide-content-image' src="${user.avatar}" alt="${user.fname} ${user.lname}">
+                        <h2>${user.fname} ${user.lname}</h2>
+                        <p>${user.username}</p>
+                        <button class='button'>Read More</button>
+                    </div>
+                </div>
+            `;
+            slider1Slides.appendChild(slide);
+        });
+
+        // Populate Slider 2 with data
+        const slider2Slides = document.querySelector('#slider2 .slides');
+        userData2.forEach(user => {
+            const slide = document.createElement('div');
+            slide.classList.add('slide');
+            slide.innerHTML = `
+                <div class="slide-content">
+                    <p>${user.content}</p>
+                    <div class='slide-content-image-container'> 
+                        <img class='slide-content-image' src="${user.avatar}" alt="${user.fname} ${user.lname}">
+                        <h2>${user.fname} ${user.lname}</h2>
+                        <p>${user.username}</p>
+                     </div>
+                </div>
+            `;
+            slider2Slides.appendChild(slide);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,25 +1,19 @@
 // Define a class called Slider
 class Slider {
     // Constructor function for creating a new Slider instance
-    constructor(containerId, autoplayDelay) {
-        // Set the container element of the slider based on the provided container ID
-        this.container = document.getElementById(containerId);
 
-        // Get an array of slide elements within the container
-        this.slides = Array.from(this.container.querySelectorAll('.slide'));
-
-        this.autoplayDelay = autoplayDelay;
-
-        // Initialize the current slide index to 0
-        this.currentSlide = 0;
-
-        // Calculate the total number of slides
-        this.totalSlides = this.slides.length;
-
-        // Initialize the interval ID for autoplay
+    constructor(sliderElement) {
+        // Features for the slider 
+        this.slider = sliderElement;
+        this.slides = sliderElement.querySelector('.slides');
+        this.slideItems = Array.from(this.slides.querySelectorAll('.slide'));
+        this.arrowPrev = this.slider.querySelector('.slider-btn.prev');
+        this.arrowNext = this.slider.querySelector('.slider-btn.next');
+        this.dotsContainer = this.slider.querySelector('.dots');
+        this.autoplayDelay = parseInt(this.slider.dataset.slider) || 0;
+        this.currentSlideIndex = 0;
+        this.totalSlides = this.slideItems.length;
         this.interval = null;
-
-        // Initialize the slider
         this.init();
     }
 
@@ -32,37 +26,37 @@ class Slider {
         this.updateDots();
 
         // Add event listeners for prev and next buttons
-        this.container.querySelector('.prev').addEventListener('click', () => this.prevSlide());
-        this.container.querySelector('.next').addEventListener('click', () => this.nextSlide());
+        this.arrowPrev.addEventListener('click', () => this.prevSlide());
+        this.arrowNext.addEventListener('click', () => this.nextSlide());
 
-        // Add event listeners for dot navigation
-        this.container.querySelectorAll('.dot').forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                this.goToSlide(index);
-            });
-        });
+        // Add event listeners for the arrows buttons
+        this.arrowPrev.addEventListener('mouseenter', () => this.pauseAutoplay());
+        this.arrowPrev.addEventListener('mouseleave', () => this.startAutoplay());
+        this.arrowNext.addEventListener('mouseenter', () => this.pauseAutoplay());
+        this.arrowNext.addEventListener('mouseleave', () => this.startAutoplay());
 
-        // Start autoplay if autoplayDelay is specified
+        // Start autoplay if autoplayDelay is specified 
         if (this.autoplayDelay) {
             this.startAutoplay();
         }
     }
-
     // Render navigation dots based on the total number of slides
     renderNavigation() {
-        const dotsContainer = this.container.querySelector('.dots');
+        const dotsContainer = this.dotsContainer;
         for (let i = 0; i < this.totalSlides; i++) {
             const dot = document.createElement('span');
             dot.classList.add('dot');
+            // Add event listeners for dot navigation
+            dot.addEventListener('click', () => this.goToSlide(i));
             dotsContainer.appendChild(dot);
         }
     }
 
-    // Update the active dot based on the current slide index
+    // Update the active dot
     updateDots() {
-        const dots = this.container.querySelectorAll('.dot');
+        const dots = this.dotsContainer.querySelectorAll('.dot');
         dots.forEach((dot, index) => {
-            if (index === this.currentSlide) {
+            if (index === this.currentSlideIndex) {
                 dot.classList.add('active');
             } else {
                 dot.classList.remove('active');
@@ -73,48 +67,60 @@ class Slider {
     // Move to the specified slide index
     goToSlide(index) {
         if (index < 0 || index >= this.totalSlides) return;
-        this.currentSlide = index;
+        this.currentSlideIndex = index;
         this.updateDots();
         this.updateSlidePosition();
+        if (this.autoplayDelay) {
+            this.startAutoplay();
+        }
     }
 
     // Move to the next slide
     nextSlide() {
-        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+        this.currentSlideIndex = (this.currentSlideIndex + 1) % this.totalSlides;
         this.updateDots();
         this.updateSlidePosition();
     }
 
     // Move to the previous slide
     prevSlide() {
-        this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+        this.currentSlideIndex = (this.currentSlideIndex - 1 + this.totalSlides) % this.totalSlides;
         this.updateDots();
         this.updateSlidePosition();
     }
 
+
     // Update the position of slides based on the current slide index
     updateSlidePosition() {
-        const offset = -this.currentSlide * 100;
-        this.slides.forEach(slide => {
-            slide.style.transform = `translateX(${offset}%)`;
-        });
+        const offset = -this.currentSlideIndex * 100;
+        console.log(this.currentSlideIndex)
+        // console.log(this.totalSlides)
+        if (this.currentSlideIndex === 0) {
+            this.slides.style.transition = 'none';
+        }
+        else {
+            this.slides.style.transition = 'transform .4s ease-in';
+        }
+
+        this.slides.style.transform = `translateX(${offset}%)`;
+
     }
-
-    updateSlidePosition() {
-        const offset = -this.currentSlide * 100;
-        this.slides.forEach((slide, index) => {
-            slide.style.transition = 'transform .01s  ease'; // Add smooth transition effect
-            slide.style.transitionDelay = `.1s linear`; // Adjust transition delay
-            slide.style.transform = `translateX(${offset}%)`;
-        });
-    }
-
-
     // Start autoplay for the slider
     startAutoplay() {
+        clearInterval(this.interval); // Clear any previous interval
         this.interval = setInterval(() => {
             this.nextSlide();
         }, this.autoplayDelay);
     }
-}
 
+    //Pause autoplay for the slider
+    pauseAutoplay() {
+        clearInterval(this.interval);
+    }
+}
+//Creates a new Slider instance for each slider element found in the document.
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.slider').forEach(sliderElement => {
+        new Slider(sliderElement);
+    });
+});

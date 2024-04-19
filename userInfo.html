@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Information</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="userDetails">
+    </div>
+
+    <script>
+        const userDetailsContainer = document.getElementById("userDetails");
+
+        function getURLParameter(id) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(id);
+        }
+
+
+        const userId = getURLParameter('id');
+        console.log(userId)
+        fetch(`https://www.melivecode.com/api/users/${userId}`, { method: "GET" })
+            .then(response => response.json())
+            .then(user => {
+                console.log(user)
+                userDetailsContainer.innerHTML = `
+             <div class='userDetails'> 
+                <img class='userDetails-image' src="${user.user.avatar}" alt="${user.user.fname} ${user.user.lname}">
+                <h2>${user.user.fname} ${user.user.lname}</h2>
+                <p>${user.user.username}</p>
+             </div>
+                 `;
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+
+</html>

@@ -10,8 +10,7 @@
 /* Slides container */
 .slides {
     display: flex;
-    transition: transform .5s ease;
-}
+ }
 
 /* Styling for individual slide */
 .slide {
@@ -106,7 +105,7 @@
 }
 
 /* Styling for button */
-.button {
+.button , a{
     background-color: #3498db;  
     color: white; 
     padding: 10px 20px;  
@@ -116,9 +115,29 @@
     text-transform: capitalize;  
     transition: background-color 0.3s;  
     border: 0px; 
-}
+    text-decoration: none;
+ }
 
 /* Styling for button on hover */
 .button:hover {
     background-color: #3fa8ee;  
 }
+
+
+/* Styling for userDetails */
+.userDetails{
+    align-items: center;  
+    text-align: center;  
+    justify-content: center;  
+    height: 100%; 
+    width: 100%; 
+
+}
+
+/* Stiyling for userDetails Image */
+.userDetails-image{
+width: 200px;
+
+}
+
+

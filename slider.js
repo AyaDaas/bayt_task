@@ -17,7 +17,7 @@ class Slider {
     // Initialize the slider
     init() {
 
-        this.createNavigationButtons();
+        this.createNavigationArrows();
 
         // Render navigation dots
         this.renderNavigation();
@@ -37,7 +37,7 @@ class Slider {
 
 
 
-    createNavigationButtons() {
+    createNavigationArrows() {
         const prevButton = document.createElement('button');
         prevButton.classList.add('slider-btn', 'prev');
         prevButton.innerHTML = '&#10094;';

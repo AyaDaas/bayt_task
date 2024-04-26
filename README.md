@@ -5,7 +5,7 @@ To use the slider component in your HTML document, follow this structure:
     <div class="slides">
         <div class="slide">
             <div class="slide-content">
-                <img class="slide-content-image" src="https://www.melivecode.com/users/2.png" alt="Slide Image">
+               
                 <p>Slide 1</p>
             </div>
         </div>
@@ -15,6 +15,7 @@ To use the slider component in your HTML document, follow this structure:
     <button class="slider-btn next">&#10095;</button>
     <div class="dots"></div>
 </div>
+
 
 
 The outer <div> element with the class slider initializes the slider component.

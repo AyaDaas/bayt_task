@@ -1,21 +1,11 @@
 # bayt_task
 To use the slider component in your HTML document, follow this structure:
-<<<<<<< HEAD
 <div>
     
     <div class="slider"  data-slider="3400">
     <div class="slides">
         <div class="slide">
             <div class="slide-content">
-=======
-
-<div>
-<div class="slider" data-slider='{"delay":3400}'>
-    <div class="slides">
-        <div class="slide">
-            <div class="slide-content">
-             <img class='slide-content-image' src="https://www.melivecode.com/users/2.png">
->>>>>>> e907ca7 (last update)
                 <p>Slide 1</p>
             </div>
         </div>

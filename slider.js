@@ -7,10 +7,7 @@ class Slider {
         this.slider = sliderElement;
         this.slides = sliderElement.querySelector('.slides');
         this.slideItems = Array.from(this.slides.querySelectorAll('.slide'));
-        this.arrowPrev = this.slider.querySelector('.slider-btn.prev');
-        this.arrowNext = this.slider.querySelector('.slider-btn.next');
-        this.dotsContainer = this.slider.querySelector('.dots');
-        this.autoplayDelay = parseInt(this.slider.dataset.slider) || 0;
+        this.autoplayDelay = this.slider.dataset.slider ? JSON.parse(this.slider.dataset.slider).delay : 0;
         this.currentSlideIndex = 0;
         this.totalSlides = this.slideItems.length;
         this.interval = null;
@@ -19,37 +16,66 @@ class Slider {
 
     // Initialize the slider
     init() {
+
+        this.createNavigationButtons();
+
         // Render navigation dots
         this.renderNavigation();
 
         // Update the active dot
         this.updateDots();
 
-        // Add event listeners for prev and next buttons
-        this.arrowPrev.addEventListener('click', () => this.prevSlide());
-        this.arrowNext.addEventListener('click', () => this.nextSlide());
+        this.addEventListeners();
 
-        // Add event listeners for the arrows buttons
+
+
+        // Start autoplay if autoplayDelay is specified 
+        if (this.autoplayDelay !== 0) {
+            this.startAutoplay();
+        }
+    }
+
+
+
+    createNavigationButtons() {
+        const prevButton = document.createElement('button');
+        prevButton.classList.add('slider-btn', 'prev');
+        prevButton.innerHTML = '&#10094;';
+        prevButton.addEventListener('click', () => this.prevSlide());
+        this.slider.appendChild(prevButton);
+
+        const nextButton = document.createElement('button');
+        nextButton.classList.add('slider-btn', 'next');
+        nextButton.innerHTML = '&#10095;';
+        nextButton.addEventListener('click', () => this.nextSlide());
+        this.slider.appendChild(nextButton);
+
+        this.arrowPrev = prevButton;
+        this.arrowNext = nextButton;
+
+    }
+
+
+    addEventListeners() {
         this.arrowPrev.addEventListener('mouseenter', () => this.pauseAutoplay());
         this.arrowPrev.addEventListener('mouseleave', () => this.startAutoplay());
         this.arrowNext.addEventListener('mouseenter', () => this.pauseAutoplay());
         this.arrowNext.addEventListener('mouseleave', () => this.startAutoplay());
-
-        // Start autoplay if autoplayDelay is specified 
-        if (this.autoplayDelay) {
-            this.startAutoplay();
-        }
     }
+
     // Render navigation dots based on the total number of slides
     renderNavigation() {
-        const dotsContainer = this.dotsContainer;
+        const dotsContainer = document.createElement('div');
+        dotsContainer.classList.add('dots');
         for (let i = 0; i < this.totalSlides; i++) {
             const dot = document.createElement('span');
             dot.classList.add('dot');
-            // Add event listeners for dot navigation
             dot.addEventListener('click', () => this.goToSlide(i));
             dotsContainer.appendChild(dot);
         }
+        this.slider.appendChild(dotsContainer);
+        this.dotsContainer = dotsContainer;
+        this.updateDots();
     }
 
     // Update the active dot
@@ -91,20 +117,29 @@ class Slider {
 
 
     // Update the position of slides based on the current slide index
+    // updateSlidePosition() {
+    //     const offset = -this.currentSlideIndex * 100;
+    //     // console.log(this.totalSlides)
+
+    //     this.slides.style.transition = 'transform .4s ease-in';
+    //     this.slides.style.transform = `translateX(${offset}%)`;
+
+    // }
+
     updateSlidePosition() {
-        const offset = -this.currentSlideIndex * 100;
-        console.log(this.currentSlideIndex)
-        // console.log(this.totalSlides)
-        if (this.currentSlideIndex === 0) {
-            this.slides.style.transition = 'none';
-        }
-        else {
-            this.slides.style.transition = 'transform .4s ease-in';
-        }
-
-        this.slides.style.transform = `translateX(${offset}%)`;
-
+        const currentSlide = this.slideItems[this.currentSlideIndex];
+        this.slideItems.forEach((slide) => {
+            if (slide === currentSlide) {
+                slide.style.opacity = 1;
+            } else {
+                slide.style.opacity = 0;
+            }
+        });
     }
+
+
+
+
     // Start autoplay for the slider
     startAutoplay() {
         clearInterval(this.interval); // Clear any previous interval
@@ -117,6 +152,7 @@ class Slider {
     pauseAutoplay() {
         clearInterval(this.interval);
     }
+
 }
 //Creates a new Slider instance for each slider element found in the document.
 document.addEventListener('DOMContentLoaded', function () {
@@ -124,3 +160,5 @@ document.addEventListener('DOMContentLoaded', function () {
         new Slider(sliderElement);
     });
 });
+
+

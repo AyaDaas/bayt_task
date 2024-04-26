@@ -5,7 +5,7 @@ To use the slider component in your HTML document, follow this structure:
     <div class="slides">
         <div class="slide">
             <div class="slide-content">
-                <img class="slide-content-image" src="your-image-url.jpg" alt="Slide Image">
+                <img class="slide-content-image" src="https://www.melivecode.com/users/2.png" alt="Slide Image">
                 <p>Slide 1</p>
             </div>
         </div>

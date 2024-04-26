@@ -1,14 +1,11 @@
 # bayt_task
 To use the slider component in your HTML document, follow this structure:
-
-<div class="slider" data-slider="3400">
+<div>
     
+    <div class="slider"  data-slider="3400">
     <div class="slides">
-        
         <div class="slide">
-            
             <div class="slide-content">
-                
                 <p>Slide 1</p>
             </div>
         </div>
@@ -18,6 +15,8 @@ To use the slider component in your HTML document, follow this structure:
     <button class="slider-btn next">&#10095;</button>
     <div class="dots"></div>
 </div>
+</div>
+
 
 
 

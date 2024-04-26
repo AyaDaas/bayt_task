@@ -5,7 +5,6 @@ To use the slider component in your HTML document, follow this structure:
     <div class="slides">
         <div class="slide">
             <div class="slide-content">
-               
                 <p>Slide 1</p>
             </div>
         </div>

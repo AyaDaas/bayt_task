@@ -1,4 +1,8 @@
 # bayt_task
+
+In this slider implementation, the slides work in a circular manner.
+Instead of a linear transition where slides move from left to right or vice versa, the slides move along a circular path.
+
 To use the slider component in your HTML document, follow this structure:
 <div>
 

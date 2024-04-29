@@ -11,11 +11,15 @@ class Slider {
         this.currentSlideIndex = 0;
         this.totalSlides = this.slideItems.length;
         this.interval = null;
+
+        this.angleIncrement = (2 * Math.PI) / this.totalSlides;
+        this.radius = 100;
         this.init();
     }
 
     // Initialize the slider
     init() {
+        this.showSlide(this.currentSlideIndex);
 
         this.createNavigationArrows();
 
@@ -28,6 +32,7 @@ class Slider {
         this.addEventListeners();
 
 
+        this.updateSlidePosition()
 
         // Start autoplay if autoplayDelay is specified 
         if (this.autoplayDelay !== 0) {
@@ -36,6 +41,15 @@ class Slider {
     }
 
 
+    showSlide(index) {
+        this.slideItems.forEach((slide, i) => {
+            if (i === index) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+    }
 
     createNavigationArrows() {
         const prevButton = document.createElement('button');
@@ -96,6 +110,8 @@ class Slider {
         this.currentSlideIndex = index;
         this.updateDots();
         this.updateSlidePosition();
+        this.showSlide(this.currentSlideIndex);
+
         if (this.autoplayDelay) {
             this.startAutoplay();
         }
@@ -106,6 +122,8 @@ class Slider {
         this.currentSlideIndex = (this.currentSlideIndex + 1) % this.totalSlides;
         this.updateDots();
         this.updateSlidePosition();
+        this.showSlide(this.currentSlideIndex);
+
     }
 
     // Move to the previous slide
@@ -113,29 +131,39 @@ class Slider {
         this.currentSlideIndex = (this.currentSlideIndex - 1 + this.totalSlides) % this.totalSlides;
         this.updateDots();
         this.updateSlidePosition();
+        this.showSlide(this.currentSlideIndex);
+
     }
 
 
     // Update the position of slides based on the current slide index
+    updateSlidePosition() {
+        // const offset = -this.currentSlideIndex * 100;
+        // // console.log(this.totalSlides)
+
+        // this.slides.style.transition = 'transform .4s ease-in';
+        // this.slides.style.transform = `translateX(${offset}%)`;
+        this.slideItems.forEach((slide, i) => {
+            const angle = i * this.angleIncrement;
+            const x = this.radius * Math.cos(angle);
+            const y = this.radius * Math.sin(angle);
+
+            slide.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+        });
+
+    }
+
     // updateSlidePosition() {
-    //     const offset = -this.currentSlideIndex * 100;
-    //     // console.log(this.totalSlides)
-
-    //     this.slides.style.transition = 'transform .4s ease-in';
-    //     this.slides.style.transform = `translateX(${offset}%)`;
-
+    //     const currentSlide = this.slideItems[this.currentSlideIndex];
+    //     this.slideItems.forEach((slide) => {
+    //         if (slide === currentSlide) {
+    //             slide.style.opacity = 1;
+    //         } else {
+    //             slide.style.opacity = 0;
+    //         }
+    //     });
     // }
 
-    updateSlidePosition() {
-        const currentSlide = this.slideItems[this.currentSlideIndex];
-        this.slideItems.forEach((slide) => {
-            if (slide === currentSlide) {
-                slide.style.opacity = 1;
-            } else {
-                slide.style.opacity = 0;
-            }
-        });
-    }
 
 
 
